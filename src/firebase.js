@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getDocs, getFirestore, collection } from "firebase/firestore";
+import { getDocs, getFirestore, collection, onSnapshot, doc } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -29,4 +29,10 @@ async function getSurveys(db) {
   return surveysList;
 }
 
-export {getSurveys}
+async function snapShotSurveys(db) {
+  const surveysCol = collection(db, 'surveys');
+  const snapshot = await onSnapshot(doc(surveysCol), (doc) => {console.log("Current data: ", doc.data())})
+  return snapshot
+}
+
+export {getSurveys, snapShotSurveys}
