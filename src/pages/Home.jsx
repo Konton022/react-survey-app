@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
-import db, { getSurveys } from "../firebase";
 import Forms from "../components/Forms";
+import { db, pushSurvey, subscribeData } from "../firebase";
 
 const Home = () => {
-  const [value, setValue] = useState([]);
+  const [value, setValue] = useState({});
   
+  const addSurveyData = (data) => {
+    pushSurvey(db, data)
+  }
+
 
   useEffect(() => {
-    getSurveys(db).then((data) => setValue(data));
+    setValue(subscribeData(db, 'surveys'))
   }, []);
 
 
   return (
     <div>
-        {!value.length ? <div>loading...</div> : value.length}
-          <Forms  />
+        <Forms addSurveyData={addSurveyData} />
     </div>
   );
 };

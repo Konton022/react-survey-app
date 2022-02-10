@@ -1,38 +1,32 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getDocs, getFirestore, collection, onSnapshot, doc } from "firebase/firestore";
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref, set, push, onValue} from "firebase/database";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
+// TODO: Replace with your app's Firebase project configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCXJoED6U4rZ9kfi8SMJbrhgTxC7yClOBs",
-  authDomain: "react-survey-48e71.firebaseapp.com",
-  projectId: "react-survey-48e71",
-  storageBucket: "react-survey-48e71.appspot.com",
-  messagingSenderId: "344726580565",
-  appId: "1:344726580565:web:0725e7271d5f973a0093dc"
+    apiKey: "AIzaSyCXJoED6U4rZ9kfi8SMJbrhgTxC7yClOBs",
+    authDomain: "react-survey-48e71.firebaseapp.com",
+    databaseURL: "https://react-survey-48e71-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "react-survey-48e71",
+    storageBucket: "react-survey-48e71.appspot.com",
+    messagingSenderId: "344726580565",
+    appId: "1:344726580565:web:0725e7271d5f973a0093dc"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-const db = getFirestore()
+// Get a reference to the database service
+const db = getDatabase(app);
+const pushSurvey = (db, data) => {
+    push(ref(db, 'surveys'), data)
+} 
 
-export default db
-
-async function getSurveys(db) {
-  const surveysCol = collection(db, 'surveys');
-  const snapshot = await getDocs(surveysCol);
-  const surveysList = snapshot.docs.map(doc => doc.data());
-  return surveysList;
+const subscribeData = (db, dataName) => {
+    return onValue(ref(db, dataName), snapshot=> {
+        const data =  snapshot.val();
+        const key = snapshot.key;
+        return {key, data}
+    })
 }
 
-async function snapShotSurveys(db) {
-  const surveysCol = collection(db, 'surveys');
-  const snapshot = await onSnapshot(doc(surveysCol), (doc) => {console.log("Current data: ", doc.data())})
-  return snapshot
-}
 
-export {getSurveys, snapShotSurveys}
+export {db, pushSurvey, subscribeData}
