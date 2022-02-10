@@ -20,11 +20,11 @@ const pushSurvey = (db, data) => {
     push(ref(db, 'surveys'), data)
 } 
 
-const subscribeData = (db, dataName) => {
-    return onValue(ref(db, dataName), snapshot=> {
+const subscribeData = (cb) => {
+    onValue(ref(db, 'surveys'), snapshot=> {
         const data =  snapshot.val();
         const key = snapshot.key;
-        return {key, data}
+        cb(key, data)
     })
 }
 
