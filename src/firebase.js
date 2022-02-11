@@ -20,13 +20,14 @@ const pushSurvey = (db, data) => {
     push(ref(db, 'surveys'), data)
 } 
 
-const subscribeData = (cb) => {
+const subscribeSurvey = (cb) => {
     onValue(ref(db, 'surveys'), snapshot=> {
         const data =  snapshot.val();
-        const key = snapshot.key;
-        cb(key, data)
+        // const key = snapshot.key;
+        console.log('data', data);
+        cb(data)
     })
 }
 
 
-export {db, pushSurvey, subscribeData}
+export {db, pushSurvey, subscribeSurvey}

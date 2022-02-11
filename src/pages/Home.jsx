@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Forms from "../components/Forms";
-import { db, pushSurvey, subscribeData } from "../firebase";
+import ListItems from "../components/ListItems";
+import { db, pushSurvey, subscribeSurvey } from "../firebase";
 
 const Home = () => {
-  const [value, setValue] = useState({});
+  const [value, setValue] = useState([]);
   
   const addSurveyData = (data) => {
     pushSurvey(db, data)
@@ -11,13 +12,14 @@ const Home = () => {
 
 
   useEffect(() => {
-    setValue(subscribeData(db, 'surveys'))
+    subscribeSurvey(setValue)
   }, []);
 
 
   return (
-    <div>
+    <div className="mx-12">
         <Forms addSurveyData={addSurveyData} />
+        <ListItems value={value} />
     </div>
   );
 };

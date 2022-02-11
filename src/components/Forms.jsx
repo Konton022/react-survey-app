@@ -22,7 +22,7 @@ const Forms = ({addSurveyData}) => {
     })
 
     return (
-        <form className='min-w-fit border border-indigo-800 rounded mx-12' onSubmit={formik.handleSubmit}>
+        <form className='min-w-fit border border-indigo-800 rounded' onSubmit={formik.handleSubmit}>
             
             <fieldset className='flex flex-wrap flex-row border border-indigo-600 rounded m-2 p-2'>
                 <legend className='px-1'>Customer data</legend>     
